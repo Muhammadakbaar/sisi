@@ -3,6 +3,7 @@ package com.backend.sisi.controller;
 import com.backend.sisi.dto.request.VendorRequest;
 import com.backend.sisi.dto.response.VendorResponse;
 import com.backend.sisi.service.VendorService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/vendors")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class VendorController {
 
     @Autowired

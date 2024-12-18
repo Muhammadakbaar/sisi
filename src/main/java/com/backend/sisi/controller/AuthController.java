@@ -7,6 +7,7 @@ import com.backend.sisi.dto.request.SignUpRequest;
 import com.backend.sisi.dto.response.JwtAuthenticationResponse;
 import com.backend.sisi.entity.User;
 import com.backend.sisi.service.AuthService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
+@SecurityRequirement(name = "bearerAuth")
 
 public class AuthController {
 

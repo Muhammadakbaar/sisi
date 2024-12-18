@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("api/v1/admin/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("api/v1/users/**").hasAnyAuthority(Role.USER.name(),Role.ADMIN.name())
                         .requestMatchers("api/v1/vendors/**").hasAnyAuthority(Role.USER.name(),Role.ADMIN.name())
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

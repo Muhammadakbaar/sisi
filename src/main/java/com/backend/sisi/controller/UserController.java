@@ -3,6 +3,7 @@ package com.backend.sisi.controller;
 import com.backend.sisi.dto.request.UserRequest;
 import com.backend.sisi.dto.response.UserResponse;
 import com.backend.sisi.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     @Autowired
