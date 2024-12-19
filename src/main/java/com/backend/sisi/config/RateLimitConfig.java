@@ -23,12 +23,18 @@ public class RateLimitConfig {
     @Bean
     public FilterRegistrationBean<RateLimitFilter> rateLimitFilter() {
         FilterRegistrationBean<RateLimitFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RateLimitFilter());
+        registrationBean.setFilter(rateLimitFilterBean());
         registrationBean.addUrlPatterns("/api/v1/vendors/*");
         registrationBean.addUrlPatterns("/api/v1/users/*");
 
         return registrationBean;
     }
+
+    @Bean
+    public RateLimitFilter rateLimitFilterBean() {
+        return new RateLimitFilter();
+    }
+
     public class RateLimitFilter extends OncePerRequestFilter {
 
         private final Bucket bucket;
@@ -37,13 +43,14 @@ public class RateLimitConfig {
             Bandwidth limit = Bandwidth.classic(10, Refill.greedy(10, Duration.ofSeconds(1)));
             this.bucket = Bucket4j.builder().addLimit(limit).build();
         }
+
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
             if (bucket.tryConsume(1)) {
-                    response.setHeader("X-Rate-Limit-Limit", "10");
-                    response.setHeader("X-Rate-Limit-Remaining", String.valueOf(bucket.getAvailableTokens()));
-                    response.setHeader("X-Rate-Limit-Reset", String.valueOf(Duration.ofSeconds(1).toMillis()));
+                response.setHeader("X-Rate-Limit-Limit", "10");
+                response.setHeader("X-Rate-Limit-Remaining", String.valueOf(bucket.getAvailableTokens()));
+                response.setHeader("X-Rate-Limit-Reset", String.valueOf(Duration.ofSeconds(1).getSeconds()));
                 filterChain.doFilter(request, response);
             } else {
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
